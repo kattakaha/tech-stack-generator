@@ -18,7 +18,7 @@ export const generateIconUrl = (techs: TechSchema[]) => {
   return url;
 };
 
-interface SkillIconsGeneratorProps {
+export interface SkillIconsGeneratorProps {
   title: string;
   techs: TechSchema[];
   categories: TechCategory[];
