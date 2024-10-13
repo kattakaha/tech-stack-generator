@@ -34,7 +34,7 @@ export default function SkillIconsGenerateContainer() {
       <div className="space-y-4">
         <Input
           id="techs"
-          placeholder="検索"
+          placeholder="Search"
           ref={searchWordRef}
           onChange={handleSearchTech}
         />
@@ -46,13 +46,14 @@ export default function SkillIconsGenerateContainer() {
           categories={[TechCategory.Language]}
         />
         <SkillIconsGenerator
-          title={"Frameworks | Platforms | Libraries"}
+          title={"Frameworks | Libraries"}
           techs={filteredTechs}
-          categories={[
-            TechCategory.Framework,
-            TechCategory.Platform,
-            TechCategory.Library,
-          ]}
+          categories={[TechCategory.Framework, TechCategory.Library]}
+        />
+        <SkillIconsGenerator
+          title={"Platforms"}
+          techs={filteredTechs}
+          categories={[TechCategory.Platform]}
         />
         <SkillIconsGenerator
           title={"Cloud"}
@@ -67,6 +68,11 @@ export default function SkillIconsGenerateContainer() {
             TechCategory.CICD,
             TechCategory.BuildTool,
           ]}
+        />
+        <SkillIconsGenerator
+          title={"Other"}
+          techs={filteredTechs}
+          categories={[TechCategory.Other]}
         />
       </div>
     </div>

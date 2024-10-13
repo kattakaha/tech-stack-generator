@@ -37,8 +37,12 @@ export default function SkillIconsGenerator({
   );
   const previewIconUrl = generateIconUrl(filteredSelectedTechs);
 
+  const markdown = `
+    ### ${title}
+    [![${title}](${iconUrl})](${SKILL_ICONS_URL})
+    `;
+
   const copyToClipboard = () => {
-    const markdown = `[![My Skills](${iconUrl})](${SKILL_ICONS_URL})`;
     navigator.clipboard
       .writeText(markdown)
       .then(() => {
@@ -73,7 +77,7 @@ export default function SkillIconsGenerator({
   return (
     <div className="space-y-4">
       <div className="space-y-4">
-        <div className="text-2xl font-bold">{title}</div>
+        <div className="text-3xl font-bold">{title}</div>
         <div className="text-sm">Preview</div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
           {previewIconUrl && (
@@ -119,10 +123,7 @@ export default function SkillIconsGenerator({
             />
           </div>
           <div className="flex items-center space-x-2">
-            <Input
-              value={`[![${title}](${iconUrl})](${SKILL_ICONS_URL})`}
-              readOnly
-            />
+            <Input value={markdown} readOnly className="whitespace-pre-wrap" />
             <Button size="icon" onClick={copyToClipboard}>
               <Copy className="h-4 w-4" />
             </Button>
