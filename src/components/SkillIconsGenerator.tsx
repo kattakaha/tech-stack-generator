@@ -128,6 +128,14 @@ export default function SkillIconsGenerator({
     <div className="space-y-4">
       <div className="space-y-4">
         <div className="text-3xl font-bold">{title}</div>
+        <div className="space-y-2 flex flex-col items-end justify-end">
+          <Input
+            placeholder={`If you want to update an already existing ${title} icons, please enter the URL`}
+            value={inputUrl}
+            onChange={handleUrlChange}
+          />
+          <Button onClick={updateSelectedTechsFromUrl}>Apply</Button>
+        </div>
         <div className="flex flex-row gap-2">
           <div className="text-sm">Preview</div>
           <Switch
@@ -158,14 +166,6 @@ export default function SkillIconsGenerator({
             width="120px"
             height="25px"
           />
-        </div>
-        <div className="space-y-2 flex flex-col items-end justify-end">
-          <Input
-            placeholder={`If you want to update an already existing ${title} icons, please enter the URL`}
-            value={inputUrl}
-            onChange={handleUrlChange}
-          />
-          <Button onClick={updateSelectedTechsFromUrl}>Apply</Button>
         </div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
           {previewIconUrl && <TechIcons src={previewIconUrl} />}
