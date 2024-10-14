@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { Copy, Moon, Sun } from "lucide-react";
 import React from "react";
-import Image from "next/image";
 import { Toggle } from "@/components/ui/toggle";
 import { SKILL_ICONS_URL, TechSchema } from "@/constants";
 import { TechCategory } from "@/enums";
 import { Switch } from "@/components/ui/switch";
 
 import { Combobox } from "@/components/Combobox";
+import TechIcons from "@/components/TechIcons";
 
 export type IconTheme = "light" | "dark";
 export type PerLine = "5" | "6" | "7" | "8" | "9" | "10";
@@ -122,15 +122,7 @@ export default function SkillIconsGenerator({
           />
         </div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
-          {previewIconUrl && (
-            <Image
-              src={previewIconUrl}
-              width={100}
-              height={100}
-              alt="技術スタックアイコン"
-              className="m-auto w-auto h-auto"
-            />
-          )}
+          {previewIconUrl && <TechIcons src={previewIconUrl} />}
         </div>
         <div className="flex flex-row flex-wrap justify-center">
           {techs
@@ -156,13 +148,7 @@ export default function SkillIconsGenerator({
       {iconUrl && (
         <div className="space-y-4">
           <div className="border rounded-lg p-4 bg-muted">
-            <Image
-              src={iconUrl}
-              width={100}
-              height={100}
-              alt="技術スタックアイコン"
-              className="mx-auto w-auto h-auto"
-            />
+            <TechIcons src={iconUrl} />
           </div>
           <div className="flex items-center space-x-2">
             <Input value={markdown} readOnly className="whitespace-pre-wrap" />
