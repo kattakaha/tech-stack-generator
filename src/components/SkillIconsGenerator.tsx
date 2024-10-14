@@ -8,7 +8,7 @@ import { Copy, Moon, Sun } from "lucide-react";
 import React from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { SKILL_ICONS_URL, TechSchema } from "@/constants";
-import { TechCategory } from "@/enums";
+import { TechCategory, TechId } from "@/enums";
 import { Switch } from "@/components/ui/switch";
 
 import { Combobox } from "@/components/Combobox";
@@ -43,6 +43,7 @@ export default function SkillIconsGenerator({
   const [selectedTechs, setSelectedTechs] = useState<TechSchema[]>([]);
   const [theme, setTheme] = useState<IconTheme>("dark");
   const [perLine, setPerLine] = useState<PerLine>("10");
+  const [inputUrl, setInputUrl] = useState<string>("");
 
   const filteredSelectedTechs = selectedTechs.filter((tech) =>
     categories.includes(tech.category)
@@ -59,14 +60,14 @@ export default function SkillIconsGenerator({
       .writeText(markdown)
       .then(() => {
         toast({
-          title: "クリップボードにコピーしました",
-          description: "マークダウンがクリップボードにコピーされました。",
+          title: "Copied to clipboard.",
+          description: "The markdown has been copied to the clipboard.",
         });
       })
       .catch(() => {
         toast({
-          title: "コピーに失敗しました",
-          description: "もう一度お試しいただくか、手動でコピーしてください。",
+          title: "Copy failed.",
+          description: "Please try again or copy manually.",
           variant: "destructive",
         });
       });
@@ -84,6 +85,43 @@ export default function SkillIconsGenerator({
     const url = generateIconUrl(selectedTechs, theme, perLine);
     if (!url) return;
     setIconUrl(url);
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputUrl(e.target.value);
+  };
+
+  const updateSelectedTechsFromUrl = () => {
+    try {
+      const url = new URL(inputUrl);
+      const params = new URLSearchParams(url.search);
+      const skillIds: TechId[] =
+        (params
+          .get("i")
+          ?.split(",")
+          .filter((id) =>
+            techs.some(
+              (tech) => tech.id === id && categories.includes(tech.category)
+            )
+          ) as TechId[]) || [];
+
+      if (!skillIds.length) throw new Error();
+      const newSelectedTechs = techs.filter((tech) =>
+        skillIds.includes(tech.id)
+      );
+      setSelectedTechs(newSelectedTechs);
+
+      toast({
+        title: "Selected skills updated",
+        description: "Skills were successfully updated from the URL.",
+      });
+    } catch {
+      toast({
+        title: "Invalid URL",
+        description: "Please enter a valid URL.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -121,6 +159,14 @@ export default function SkillIconsGenerator({
             height="25px"
           />
         </div>
+        <div className="space-y-2 flex flex-col items-end justify-end">
+          <Input
+            placeholder={`If you want to update an already existing ${title} icons, please enter the URL`}
+            value={inputUrl}
+            onChange={handleUrlChange}
+          />
+          <Button onClick={updateSelectedTechsFromUrl}>Apply</Button>
+        </div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
           {previewIconUrl && <TechIcons src={previewIconUrl} />}
         </div>
@@ -132,6 +178,7 @@ export default function SkillIconsGenerator({
                 key={tech.id}
                 onClick={() => handleTechToggle(tech)}
                 className="m-1"
+                pressed={selectedTechs.includes(tech)}
               >
                 {tech.name}
               </Toggle>
