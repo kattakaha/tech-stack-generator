@@ -15,9 +15,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Skill Icons Generator",
+  title: "Tech Stack Generator",
   description:
-    "This is a generator tool that creates customized icons from the Skillicons icon set in Markdown format.",
+    "This is a generator tool that creates customized Tech Stack from the Skillicons icon set in Markdown format.",
 };
 
 export default function RootLayout({
