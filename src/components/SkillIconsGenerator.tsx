@@ -4,17 +4,27 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { Copy } from "lucide-react";
+import { Copy, Moon, Sun } from "lucide-react";
 import React from "react";
 import Image from "next/image";
 import { Toggle } from "@/components/ui/toggle";
 import { SKILL_ICONS_URL, TechSchema } from "@/constants";
 import { TechCategory } from "@/enums";
+import { Switch } from "@/components/ui/switch";
 
-export const generateIconUrl = (techs: TechSchema[]) => {
+import { Combobox } from "@/components/Combobox";
+
+export type IconTheme = "light" | "dark";
+export type PerLine = "5" | "6" | "7" | "8" | "9" | "10";
+
+export const generateIconUrl = (
+  techs: TechSchema[],
+  theme: IconTheme,
+  perLine: PerLine
+) => {
   if (techs.length === 0) return;
   const trimmedSkills = techs.map((tech) => tech.id).join(",");
-  const url = `${SKILL_ICONS_URL}/icons?i=${trimmedSkills}&perline=10`;
+  const url = `${SKILL_ICONS_URL}/icons?i=${trimmedSkills}&theme=${theme}&perline=${perLine}`;
   return url;
 };
 
@@ -31,11 +41,13 @@ export default function SkillIconsGenerator({
 }: SkillIconsGeneratorProps) {
   const [iconUrl, setIconUrl] = useState<string>("");
   const [selectedTechs, setSelectedTechs] = useState<TechSchema[]>([]);
+  const [theme, setTheme] = useState<IconTheme>("dark");
+  const [perLine, setPerLine] = useState<PerLine>("10");
 
   const filteredSelectedTechs = selectedTechs.filter((tech) =>
     categories.includes(tech.category)
   );
-  const previewIconUrl = generateIconUrl(filteredSelectedTechs);
+  const previewIconUrl = generateIconUrl(filteredSelectedTechs, theme, perLine);
 
   const markdown = `
     ### ${title}
@@ -69,7 +81,7 @@ export default function SkillIconsGenerator({
   };
 
   const handleGenerate = () => {
-    const url = generateIconUrl(selectedTechs);
+    const url = generateIconUrl(selectedTechs, theme, perLine);
     if (!url) return;
     setIconUrl(url);
   };
@@ -78,7 +90,37 @@ export default function SkillIconsGenerator({
     <div className="space-y-4">
       <div className="space-y-4">
         <div className="text-3xl font-bold">{title}</div>
-        <div className="text-sm">Preview</div>
+        <div className="flex flex-row gap-2">
+          <div className="text-sm">Preview</div>
+          <Switch
+            id="theme-switch"
+            checked={theme === "dark"}
+            uncheckedIcon={<Sun />}
+            checkedIcon={<Moon />}
+            onCheckedChange={() =>
+              setTheme(theme === "dark" ? "light" : "dark")
+            }
+            className="relative"
+          />
+          <Combobox
+            items={[
+              { value: "5", label: "5" },
+              { value: "6", label: "6" },
+              { value: "7", label: "7" },
+              { value: "8", label: "8" },
+              { value: "9", label: "9" },
+              { value: "10", label: "10" },
+            ]}
+            placeholder="per line"
+            defaultValue="10"
+            disableSearch
+            onSelect={(value) => {
+              setPerLine(value as PerLine);
+            }}
+            width="120px"
+            height="25px"
+          />
+        </div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
           {previewIconUrl && (
             <Image
