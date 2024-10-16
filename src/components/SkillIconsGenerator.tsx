@@ -1,10 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import { Copy, Moon, Sun } from "lucide-react";
+import {
+  Copy,
+  Moon,
+  Sun,
+  CheckSquare,
+  SquareMinus,
+  Square,
+} from "lucide-react";
 import React from "react";
 import { Toggle } from "@/components/ui/toggle";
 import { SKILL_ICONS_URL, TechSchema } from "@/constants";
@@ -13,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 
 import { Combobox } from "@/components/Combobox";
 import TechIcons from "@/components/TechIcons";
+import { TooltipIconButton } from "@/components/TooltipIconButton";
 
 export type IconTheme = "light" | "dark";
 export type PerLine = "5" | "6" | "7" | "8" | "9" | "10";
@@ -45,10 +53,22 @@ export default function SkillIconsGenerator({
   const [perLine, setPerLine] = useState<PerLine>("10");
   const [inputUrl, setInputUrl] = useState<string>("");
 
-  const filteredSelectedTechs = selectedTechs.filter((tech) =>
+  const filteredTechs = techs.filter((tech) =>
     categories.includes(tech.category)
   );
-  const previewIconUrl = generateIconUrl(filteredSelectedTechs, theme, perLine);
+
+  const getSelectAllIcon = useMemo(() => {
+    switch (selectedTechs.length) {
+      case 0:
+        return Square;
+      case filteredTechs.length:
+        return CheckSquare;
+      default:
+        return SquareMinus;
+    }
+  }, [selectedTechs.length, filteredTechs.length]);
+
+  const previewIconUrl = generateIconUrl(selectedTechs, theme, perLine);
 
   const markdown = `
     ### ${title}
@@ -78,6 +98,13 @@ export default function SkillIconsGenerator({
       prev.some((prev_tech) => prev_tech === tech)
         ? prev.filter((prev_tech) => prev_tech !== tech)
         : [...prev, tech]
+    );
+  };
+
+  const handleSelectAll = () => {
+    console.log(selectedTechs === filteredTechs);
+    setSelectedTechs((prev) =>
+      prev.length === filteredTechs.length ? [] : filteredTechs
     );
   };
 
@@ -136,53 +163,60 @@ export default function SkillIconsGenerator({
           />
           <Button onClick={updateSelectedTechsFromUrl}>Apply</Button>
         </div>
-        <div className="flex flex-row gap-2">
-          <div className="text-sm">Preview</div>
-          <Switch
-            id="theme-switch"
-            checked={theme === "dark"}
-            uncheckedIcon={<Sun />}
-            checkedIcon={<Moon />}
-            onCheckedChange={() =>
-              setTheme(theme === "dark" ? "light" : "dark")
-            }
-            className="relative"
-          />
-          <Combobox
-            items={[
-              { value: "5", label: "5" },
-              { value: "6", label: "6" },
-              { value: "7", label: "7" },
-              { value: "8", label: "8" },
-              { value: "9", label: "9" },
-              { value: "10", label: "10" },
-            ]}
-            placeholder="per line"
-            defaultValue="10"
-            disableSearch
-            onSelect={(value) => {
-              setPerLine(value as PerLine);
-            }}
-            width="120px"
-            height="25px"
-          />
+        <div className="flex flex-row gap-2 justify-between">
+          <div className="flex flex-row gap-2">
+            <div className="text-sm">Preview</div>
+            <Switch
+              id="theme-switch"
+              checked={theme === "dark"}
+              uncheckedIcon={<Sun />}
+              checkedIcon={<Moon />}
+              onCheckedChange={() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              }
+              className="relative"
+            />
+            <Combobox
+              items={[
+                { value: "5", label: "5" },
+                { value: "6", label: "6" },
+                { value: "7", label: "7" },
+                { value: "8", label: "8" },
+                { value: "9", label: "9" },
+                { value: "10", label: "10" },
+              ]}
+              placeholder="per line"
+              defaultValue="10"
+              disableSearch
+              onSelect={(value) => {
+                setPerLine(value as PerLine);
+              }}
+              width="120px"
+              height="25px"
+            />
+          </div>
+          <div>
+            <TooltipIconButton
+              onClick={handleSelectAll}
+              icon={getSelectAllIcon}
+              tooltipText="Select All"
+            />
+          </div>
         </div>
         <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
           {previewIconUrl && <TechIcons src={previewIconUrl} />}
         </div>
         <div className="flex flex-row flex-wrap justify-center">
-          {techs
-            .filter((tech) => categories.includes(tech.category))
-            .map((tech) => (
-              <Toggle
-                key={tech.id}
-                onClick={() => handleTechToggle(tech)}
-                className="m-1"
-                pressed={selectedTechs.includes(tech)}
-              >
-                {tech.name}
-              </Toggle>
-            ))}
+          {filteredTechs.map((tech) => (
+            <Toggle
+              key={tech.id}
+              onClick={() => handleTechToggle(tech)}
+              className="m-1"
+              pressed={selectedTechs.includes(tech)}
+            >
+              {tech.name}
+            </Toggle>
+          ))}
         </div>
       </div>
       <Button
