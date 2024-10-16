@@ -65,6 +65,11 @@ export default function TechStackGenerateContainer() {
       techs: filteredTechs,
       categories: [TechCategory.Other],
     },
+    {
+      title: "All",
+      techs: filteredTechs,
+      categories: Object.values(TechCategory),
+    },
   ];
 
   return (
