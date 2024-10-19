@@ -76,14 +76,14 @@ export default function TechStackGenerateContainer() {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto p-6 space-y-8">
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="space-y-4">
         <Input id="techs" placeholder="Search" onChange={handleSearchTech} />
       </div>
       <div className="space-y-4">
         <Tabs defaultValue={skillIconsGeneratorPropsList[0].title}>
           <ScrollArea className="whitespace-nowrap pb-3 rounded-md">
-            <TabsList>
+            <TabsList className="w-full">
               {skillIconsGeneratorPropsList.map(({ title }) => (
                 <TabsTrigger
                   key={title}
