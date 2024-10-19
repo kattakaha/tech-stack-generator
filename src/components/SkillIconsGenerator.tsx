@@ -18,9 +18,10 @@ import { SKILL_ICONS_URL, TechSchema } from "@/constants";
 import { TechCategory, TechId } from "@/enums";
 import { Switch } from "@/components/ui/switch";
 
-import { Combobox } from "@/components/Combobox";
+import { Combobox } from "@/components/utils/Combobox";
+import { TooltipIconButton } from "@/components/utils/TooltipIconButton";
 import TechIcons from "@/components/TechIcons";
-import { TooltipIconButton } from "@/components/TooltipIconButton";
+import { DndList } from "@/components/utils/DndList";
 
 export type IconTheme = "light" | "dark";
 export type PerLine = "5" | "6" | "7" | "8" | "9" | "10";
@@ -203,42 +204,58 @@ export default function SkillIconsGenerator({
             />
           </div>
         </div>
-        <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
-          {previewIconUrl && <TechIcons src={previewIconUrl} />}
-        </div>
-        <div className="flex flex-row flex-wrap justify-center">
-          {filteredTechs.map((tech) => (
-            <Toggle
-              key={tech.id}
-              onClick={() => handleTechToggle(tech)}
-              className="m-1"
-              pressed={selectedTechs.includes(tech)}
+        <div className="flex flex-row gap-2">
+          <div>
+            <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
+              {previewIconUrl && <TechIcons src={previewIconUrl} />}
+            </div>
+            <div className="flex flex-row flex-wrap justify-center">
+              {filteredTechs.map((tech) => (
+                <Toggle
+                  key={tech.id}
+                  onClick={() => handleTechToggle(tech)}
+                  className="m-1"
+                  pressed={selectedTechs.includes(tech)}
+                >
+                  {tech.name}
+                </Toggle>
+              ))}
+            </div>
+            <Button
+              onClick={handleGenerate}
+              className="w-full mt-6"
+              disabled={!selectedTechs.length}
             >
-              {tech.name}
-            </Toggle>
-          ))}
+              Generate Icon
+            </Button>
+            {iconUrl && (
+              <div className="space-y-4">
+                <div className="border rounded-lg p-4 bg-muted">
+                  <TechIcons src={iconUrl} />
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Input
+                    value={markdown}
+                    readOnly
+                    className="whitespace-pre-wrap"
+                  />
+                  <Button size="icon" onClick={copyToClipboard}>
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="w-full">
+            <DndList
+              items={selectedTechs}
+              setItems={setSelectedTechs}
+              getItemId={(tech) => tech.id}
+              renderItem={(tech) => tech.name}
+            />
+          </div>
         </div>
       </div>
-      <Button
-        onClick={handleGenerate}
-        className="w-full"
-        disabled={!selectedTechs.length}
-      >
-        Generate Icon
-      </Button>
-      {iconUrl && (
-        <div className="space-y-4">
-          <div className="border rounded-lg p-4 bg-muted">
-            <TechIcons src={iconUrl} />
-          </div>
-          <div className="flex items-center space-x-2">
-            <Input value={markdown} readOnly className="whitespace-pre-wrap" />
-            <Button size="icon" onClick={copyToClipboard}>
-              <Copy className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

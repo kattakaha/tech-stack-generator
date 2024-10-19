@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-const TechIcons = ({ src }: { src: string }) => {
+export default function TechIcons({ src }: { src: string }) {
   return (
     <Image
       src={src}
@@ -12,6 +12,4 @@ const TechIcons = ({ src }: { src: string }) => {
       className="m-auto w-auto h-auto"
     />
   );
-};
-
-export default TechIcons;
+}

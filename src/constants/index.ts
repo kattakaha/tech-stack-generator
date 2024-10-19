@@ -64,7 +64,7 @@ export const TECH_LIST: TechSchema[] = [
   },
   {
     id: TechId.Css,
-    name: "Cascading Style Sheets (CSS)",
+    name: "CSS",
     category: TechCategory.Language,
   },
   { id: TechId.Cypress, name: "Cypress", category: TechCategory.Library },
@@ -144,7 +144,7 @@ export const TECH_LIST: TechSchema[] = [
   { id: TechId.Hibernate, name: "Hibernate", category: TechCategory.Framework },
   {
     id: TechId.Html,
-    name: "HTML (Hypertext Markup Language)",
+    name: "HTML",
     category: TechCategory.Language,
   },
   { id: TechId.Htmx, name: "htmx", category: TechCategory.Framework },
