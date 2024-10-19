@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip";
 import type { LucideProps } from "lucide-react";
 
-interface TooltipIconButtonProps {
+export interface TooltipIconButtonProps {
   onClick: () => void;
   icon: React.ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>
