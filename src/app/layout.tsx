@@ -20,6 +20,13 @@ export const metadata: Metadata = {
   title: "Tech Stack Generator",
   description:
     "This is a generator tool that creates customized Tech Stack from the Skillicons icon set in Markdown format.",
+  openGraph: {
+    type: "website",
+    url: "https://tech-stack-generator.vercel.app/",
+    title: "Tech Stack Generator",
+    description:
+      "This is a generator tool that creates customized Tech Stack from the Skillicons icon set in Markdown format.",
+  },
 };
 
 export default function RootLayout({
