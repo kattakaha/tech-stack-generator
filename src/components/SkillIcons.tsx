@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-export default function TechIcons({ src }: { src: string }) {
+export default function SkillIcons({ src }: { src: string }) {
   return (
     <Image
       src={src}

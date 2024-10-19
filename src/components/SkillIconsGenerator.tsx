@@ -14,14 +14,14 @@ import {
 } from "lucide-react";
 import React from "react";
 import { Toggle } from "@/components/ui/toggle";
-import { SKILL_ICONS_URL, TechSchema } from "@/constants";
-import { TechCategory, TechId } from "@/enums";
+import { TechCategory, SkillIconsId } from "@/enums";
 import { Switch } from "@/components/ui/switch";
 
 import { Combobox } from "@/components/utils/Combobox";
 import { TooltipIconButton } from "@/components/utils/TooltipIconButton";
-import TechIcons from "@/components/TechIcons";
+import SkillIcons from "@/components/SkillIcons";
 import { DndList } from "@/components/utils/DndList";
+import { SKILL_ICONS_URL, TechSchema } from "@/constants";
 
 export type IconTheme = "light" | "dark";
 export type PerLine = "5" | "6" | "7" | "8" | "9" | "10";
@@ -123,7 +123,7 @@ export default function SkillIconsGenerator({
     try {
       const url = new URL(inputUrl);
       const params = new URLSearchParams(url.search);
-      const skillIds: TechId[] =
+      const skillIds: SkillIconsId[] =
         (params
           .get("i")
           ?.split(",")
@@ -131,7 +131,7 @@ export default function SkillIconsGenerator({
             techs.some(
               (tech) => tech.id === id && categories.includes(tech.category)
             )
-          ) as TechId[]) || [];
+          ) as SkillIconsId[]) || [];
 
       if (!skillIds.length) throw new Error();
       const newSelectedTechs = techs.filter((tech) =>
@@ -207,7 +207,7 @@ export default function SkillIconsGenerator({
         <div className="flex flex-row gap-2">
           <div>
             <div className="min-h-20 p-3 flex items-center justify-center border rounded-lg bg-muted">
-              {previewIconUrl && <TechIcons src={previewIconUrl} />}
+              {previewIconUrl && <SkillIcons src={previewIconUrl} />}
             </div>
             <div className="flex flex-row flex-wrap justify-center">
               {filteredTechs.map((tech) => (
@@ -231,7 +231,7 @@ export default function SkillIconsGenerator({
             {iconUrl && (
               <div className="space-y-4">
                 <div className="border rounded-lg p-4 bg-muted">
-                  <TechIcons src={iconUrl} />
+                  <SkillIcons src={iconUrl} />
                 </div>
                 <div className="flex items-center space-x-2">
                   <Input

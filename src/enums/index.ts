@@ -1,4 +1,4 @@
-export enum TechId {
+export enum SkillIconsId {
   Ableton = "ableton",
   ActivityPub = "activitypub",
   Actix = "actix",
@@ -236,6 +236,8 @@ export enum TechId {
   Yew = "yew",
   Zig = "zig",
 }
+
+export enum SimpleIconsId {}
 
 export enum TechCategory {
   Language = "language",

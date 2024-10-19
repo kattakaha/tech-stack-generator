@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import React from "react";
-import { TECH_LIST, SKILL_ICONS_URL, TechSchema } from "@/constants";
+import { SKILL_ICONS_LIST, SKILL_ICONS_URL, TechSchema } from "@/constants";
 import { TechCategory } from "@/enums";
 import SkillIconsGenerator, {
   SkillIconsGeneratorProps,
@@ -20,14 +20,17 @@ export const generateIconUrl = (techs: TechSchema[]) => {
 };
 
 export default function TechStackGenerateContainer() {
-  const [filteredTechs, setFilteredTechs] = useState<TechSchema[]>(TECH_LIST);
+  const [filteredTechs, setFilteredTechs] =
+    useState<TechSchema[]>(SKILL_ICONS_LIST);
 
   const handleSearchTech = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       const keyword = value.toLowerCase();
       setFilteredTechs(
-        TECH_LIST.filter((tech) => tech.name.toLowerCase().includes(keyword))
+        SKILL_ICONS_LIST.filter((tech) =>
+          tech.name.toLowerCase().includes(keyword)
+        )
       );
     },
     300
