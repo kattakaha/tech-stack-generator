@@ -52,7 +52,7 @@ export function SortableItem<T>({
       {...attributes}
       className="flex items-center justify-between  bg-secondary rounded mb-2"
     >
-      <div {...listeners} className="flex items-center cursor-move w-full p-2 ">
+      <div {...listeners} className="flex items-center cursor-move p-2 w-20">
         <span className="mr-2">
           <GripVertical size={16} />
         </span>

@@ -246,7 +246,7 @@ export default function SkillIconsGenerator({
               </div>
             )}
           </div>
-          <div>
+          <div className="w-full">
             <DndList
               items={selectedTechs}
               setItems={setSelectedTechs}
