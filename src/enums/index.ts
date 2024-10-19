@@ -237,8 +237,6 @@ export enum SkillIconsId {
   Zig = "zig",
 }
 
-export enum SimpleIconsId {}
-
 export enum TechCategory {
   Language = "language",
   Framework = "framework",
