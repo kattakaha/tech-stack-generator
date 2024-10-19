@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import React from "react";
 import { TECH_LIST, SKILL_ICONS_URL, TechSchema } from "@/constants";
@@ -10,6 +10,7 @@ import SkillIconsGenerator, {
 } from "@/components/SkillIconsGenerator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useDebouncedCallback } from "use-debounce";
 
 export const generateIconUrl = (techs: TechSchema[]) => {
   if (techs.length === 0) return;
@@ -19,16 +20,18 @@ export const generateIconUrl = (techs: TechSchema[]) => {
 };
 
 export default function TechStackGenerateContainer() {
-  const searchWordRef = useRef<HTMLInputElement | null>(null);
   const [filteredTechs, setFilteredTechs] = useState<TechSchema[]>(TECH_LIST);
 
-  const handleSearchTech = () => {
-    if (!searchWordRef.current) return;
-    const keyword = searchWordRef.current.value.toLowerCase();
-    setFilteredTechs(
-      TECH_LIST.filter((tech) => tech.name.toLowerCase().includes(keyword))
-    );
-  };
+  const handleSearchTech = useDebouncedCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      const keyword = value.toLowerCase();
+      setFilteredTechs(
+        TECH_LIST.filter((tech) => tech.name.toLowerCase().includes(keyword))
+      );
+    },
+    300
+  );
 
   const skillIconsGeneratorPropsList: SkillIconsGeneratorProps[] = [
     {
@@ -75,12 +78,7 @@ export default function TechStackGenerateContainer() {
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-8">
       <div className="space-y-4">
-        <Input
-          id="techs"
-          placeholder="Search"
-          ref={searchWordRef}
-          onChange={handleSearchTech}
-        />
+        <Input id="techs" placeholder="Search" onChange={handleSearchTech} />
       </div>
       <div className="space-y-4">
         <Tabs defaultValue={skillIconsGeneratorPropsList[0].title}>
