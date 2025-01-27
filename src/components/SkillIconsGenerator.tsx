@@ -72,9 +72,10 @@ export default function SkillIconsGenerator({
   const previewIconUrl = generateIconUrl(selectedTechs, theme, perLine);
 
   const markdown = `
-    ### ${title}
-    [![${title}](${iconUrl})](${SKILL_ICONS_URL})
-    `;
+### ${title}
+
+[![${title}](${iconUrl})](${SKILL_ICONS_URL})
+`;
 
   const copyToClipboard = () => {
     navigator.clipboard
